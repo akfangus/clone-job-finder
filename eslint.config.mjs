@@ -1,17 +1,17 @@
-import { fileURLToPath } from 'node:url';
-import path from 'node:path';
-import nextConfigModule from 'eslint-config-next';
-import prettierRecommended from 'eslint-plugin-prettier/recommended';
-import tseslint from 'typescript-eslint';
+import { fileURLToPath } from 'node:url'
+import path from 'node:path'
+import nextConfigModule from 'eslint-config-next'
+import prettierRecommended from 'eslint-plugin-prettier/recommended'
+import tseslint from 'typescript-eslint'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const nextConfigs = Array.isArray(nextConfigModule?.default ?? nextConfigModule)
   ? (nextConfigModule?.default ?? nextConfigModule)
-  : [nextConfigModule?.default ?? nextConfigModule];
+  : [nextConfigModule?.default ?? nextConfigModule]
 
-const nextConfigsWithProject = nextConfigs.map(config => {
-  if (config?.name !== 'next/typescript') return config;
+const nextConfigsWithProject = nextConfigs.map((config) => {
+  if (config?.name !== 'next/typescript') return config
 
   return {
     ...config,
@@ -23,8 +23,8 @@ const nextConfigsWithProject = nextConfigs.map(config => {
         tsconfigRootDir: __dirname,
       },
     },
-  };
-});
+  }
+})
 
 export default [
   {
@@ -50,5 +50,4 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn',
     },
   },
-];
-
+]
