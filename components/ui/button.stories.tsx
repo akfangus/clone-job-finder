@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react"
-import keys from "lodash/keys"
-import { Loader2, MoveRight } from "lucide-react"
-import type { VariantProps } from "class-variance-authority"
+import type { Meta, StoryObj } from '@storybook/react'
+import keys from 'lodash/keys'
+import { Loader2, MoveRight } from 'lucide-react'
+import type { VariantProps } from 'class-variance-authority'
 
-import { Button, buttonVariants } from "./button"
+import { Button, buttonVariants } from './button'
 
-type ButtonVariant = NonNullable<VariantProps<typeof buttonVariants>["variant"]>
-type ButtonSize = NonNullable<VariantProps<typeof buttonVariants>["size"]>
+type ButtonVariant = NonNullable<VariantProps<typeof buttonVariants>['variant']>
+type ButtonSize = NonNullable<VariantProps<typeof buttonVariants>['size']>
 
 const VARIANT_MAP = {
   default: true,
@@ -22,29 +22,29 @@ const SIZE_MAP = {
   sm: true,
   lg: true,
   icon: true,
-  "icon-sm": true,
-  "icon-lg": true,
+  'icon-sm': true,
+  'icon-lg': true,
 } satisfies Record<ButtonSize, true>
 
 const variantOptions = keys(VARIANT_MAP) as ButtonVariant[]
 const sizeOptions = keys(SIZE_MAP) as ButtonSize[]
 
 const meta = {
-  title: "Components/UI/Button",
+  title: 'Components/UI/Button',
   component: Button,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   args: {
-    variant: "default",
-    size: "default",
-    children: "버튼",
+    variant: 'default',
+    size: 'default',
+    children: '버튼',
   },
   argTypes: {
     variant: {
-      control: { type: "select" },
+      control: { type: 'select' },
       options: variantOptions,
     },
     size: {
-      control: { type: "select" },
+      control: { type: 'select' },
       options: sizeOptions,
     },
     asChild: {
@@ -57,12 +57,12 @@ const meta = {
     },
   },
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     backgrounds: {
-      default: "light",
+      default: 'light',
       values: [
-        { name: "light", value: "#ffffff" },
-        { name: "dark", value: "#020817" },
+        { name: 'light', value: '#ffffff' },
+        { name: 'dark', value: '#020817' },
       ],
     },
   },
@@ -99,14 +99,14 @@ export const Loading: Story = {
 
 export const Variants: Story = {
   args: {
-    children: "Button",
+    children: 'Button',
   },
   argTypes: {
     variant: { control: false },
   },
   render: ({ children, size }) => (
     <div className="flex flex-wrap gap-3">
-      {variantOptions.map(variant => (
+      {variantOptions.map((variant) => (
         <Button key={variant} size={size} variant={variant}>
           {children} · {variant}
         </Button>
@@ -114,4 +114,3 @@ export const Variants: Story = {
     </div>
   ),
 }
-
