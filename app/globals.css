@@ -1,5 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import '../theme/textStyle.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -118,5 +119,11 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  .temp-text-32 {
+    @apply text-[32px];
+  }
+  .basic-32 {
+    @apply font-normal leading-[1.5] text-[32px];
   }
 }

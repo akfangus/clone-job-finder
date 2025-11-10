@@ -1,0 +1,65 @@
+@layer base {
+  :is(.text-regular, [class^="text-regular-"], [class*=" text-regular-"]) {
+    @apply font-normal leading-[1.5];
+  }
+
+  :is(.text-bold, [class^="text-bold-"], [class*=" text-bold-"]) {
+    @apply font-bold leading-[1.5];
+  }
+
+  :is(.text-heading, [class^="text-heading-"], [class*=" text-heading-"]) {
+    @apply font-semibold leading-[1.4] tracking-[-0.01em];
+  }
+
+  :is(.text-regular-8, .text-bold-8, .text-heading-8) {
+    @apply text-[8px];
+  }
+
+  :is(.text-regular-10, .text-bold-10, .text-heading-10) {
+    @apply text-[10px];
+  }
+
+  :is(.text-regular-12, .text-bold-12, .text-heading-12) {
+    @apply text-[12px];
+  }
+
+  :is(.text-regular-14, .text-bold-14, .text-heading-14) {
+    @apply text-[14px];
+  }
+
+  :is(.text-regular-16, .text-bold-16, .text-heading-16) {
+    @apply text-[16px];
+  }
+
+  :is(.text-regular-18, .text-bold-18, .text-heading-18) {
+    @apply text-[18px];
+  }
+
+  :is(.text-regular-20, .text-bold-20, .text-heading-20) {
+    @apply text-[20px];
+  }
+
+  :is(.text-regular-22, .text-bold-22, .text-heading-22) {
+    @apply text-[22px];
+  }
+
+  :is(.text-regular-24, .text-bold-24, .text-heading-24) {
+    @apply text-[24px];
+  }
+
+  :is(.text-regular-26, .text-bold-26, .text-heading-26) {
+    @apply text-[26px];
+  }
+
+  :is(.text-regular-28, .text-bold-28, .text-heading-28) {
+    @apply text-[28px];
+  }
+
+  :is(.text-regular-30, .text-bold-30, .text-heading-30) {
+    @apply text-[30px];
+  }
+
+  :is(.text-regular-32, .text-bold-32, .text-heading-32) {
+    @apply text-[32px];
+  }
+}
