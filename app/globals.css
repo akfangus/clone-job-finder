@@ -123,4 +123,7 @@
   .temp-text-32 {
     @apply text-[32px];
   }
+  .basic-32 {
+    @apply font-normal leading-[1.5] text-[32px];
+  }
 }

@@ -34,7 +34,7 @@ export default function Home() {
           >
             Read our docs
           </a>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 bg-red-400">
             <p className="text-regular-32">tetsetset</p>
             <p className="text-regular-30">tetsetset</p>
             <p className="text-regular-28">tetsetset</p>
@@ -42,7 +42,7 @@ export default function Home() {
             <p className="text-regular-24">tetsetset</p>
             <p className="text-regular-22">tetsetset</p>
             <p className="text-regular-20">tetsetset</p>
-            <p className="text-regular-18">tetsetset</p>
+            <p className="text-regular-16">tetsetset</p>
             <p className="temp-text-32">tetsetset</p>
           </div>
         </div>
