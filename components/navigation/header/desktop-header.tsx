@@ -8,6 +8,7 @@ export function DesktopHeader() {
         <p className="text-heading-20">GROUP BUY</p>
         <NavMenu
           items={DESKTOP_PRIMARY_NAV_ITEMS}
+          interactionMode="hover"
           onSelectItem={(item) => {
             console.log('select', item)
           }}
@@ -18,6 +19,7 @@ export function DesktopHeader() {
       </div>
       <NavMenu
         items={DESKTOP_SECONDARY_NAV_ITEMS}
+        interactionMode="hover"
         onSelectItem={(item) => {
           console.log('select', item)
         }}

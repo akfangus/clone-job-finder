@@ -15,6 +15,14 @@
 
 ---
 
+## 최근 작업 요약 (2025-11-11)
+
+- 반응형 내비게이션 시스템 구축: `components/navigation` 전반을 정리해 데스크톱/모바일 헤더를 분리하고, `SubMenuBar`와 `useNavInteraction` 훅을 통해 호버/클릭 기반 상호작용을 지원합니다.
+- 사용성 개선 훅 정리: `useNavInteraction`과 `useResponsiveBreakpoint` 훅에서 명시적 상태 분리와 메모이제이션으로 재랜더를 최소화했습니다.
+- 레이아웃 안정화: `ResponsiveContainer` 컴포넌트로 가시성 제어(requestAnimationFrame 기반)와 뷰포트 폭 제한을 통합해 초기 레이아웃 시프트를 줄였습니다.
+
+---
+
 ## 환경 구성 & 스크립트
 
 ```bash
