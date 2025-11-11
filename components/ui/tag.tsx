@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/shared/lib/utils'
 
 const tagVariants = cva(
   'inline-flex items-center justify-center rounded-lg border font-medium leading-none tracking-tight text-foreground transition-[color,background-color,border-color] select-none whitespace-nowrap gap-1.5 w-fit rounded-md text-gray-600',

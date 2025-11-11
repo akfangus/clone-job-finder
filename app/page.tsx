@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { HomeQuerySection } from '../components/home/home-query-section'
+import { HomeQuerySection } from '../features/home'
 
 export default function Home() {
   const serverRenderedAt = dayjs().format('YYYY-MM-DD HH:mm:ss')
