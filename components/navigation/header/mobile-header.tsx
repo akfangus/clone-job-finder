@@ -1,8 +1,8 @@
 'use client'
 
-import { BriefcaseIcon, LogInIcon, MessageCircleIcon, MoreHorizontalIcon, UserIcon } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar'
 import { NavMenu } from '../nav-menu'
+import { MOBILE_GUEST_NAV_ITEMS, MOBILE_USER_NAV_ITEMS } from '../consts'
 
 export function MobileHeader() {
   const user = false
@@ -24,58 +24,17 @@ export function MobileHeader() {
       </div>
       <NavMenu
         items={navItems}
-        onClick={(item) => {
-          console.log(item)
+        interactionMode="click"
+        onSelectItem={(item) => {
+          console.log('select', item)
+        }}
+        onNavigate={({ item, parentId }) => {
+          console.log('navigate', item, parentId)
         }}
       />
     </>
   )
 }
 
-const GUEST_NAV_ITEMS = [
-  {
-    id: 'positions',
-    url: '/positions',
-    icon: <BriefcaseIcon />,
-    label: '채용공고',
-  },
-  {
-    id: 'login',
-    url: '/login',
-    icon: <LogInIcon />,
-    label: '로그인',
-  },
-  {
-    id: 'more',
-    url: '/more',
-    icon: <MoreHorizontalIcon />,
-    label: '더보기',
-  },
-]
-
-const USER_NAV_ITEMS = [
-  {
-    id: 'positions',
-    url: '/positions',
-    icon: <BriefcaseIcon />,
-    label: '채용공고',
-  },
-  {
-    id: 'chat-rooms',
-    url: '/chat-rooms',
-    icon: <MessageCircleIcon />,
-    label: '채팅',
-  },
-  {
-    id: 'my-page',
-    url: '/my-page',
-    icon: <UserIcon />,
-    label: 'MY',
-  },
-  {
-    id: 'more',
-    url: '/more',
-    icon: <MoreHorizontalIcon />,
-    label: '더보기',
-  },
-]
+const GUEST_NAV_ITEMS = MOBILE_GUEST_NAV_ITEMS
+const USER_NAV_ITEMS = MOBILE_USER_NAV_ITEMS
