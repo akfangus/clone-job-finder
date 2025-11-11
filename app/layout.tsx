@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import type { ReactElement } from 'react'
 import localFont from 'next/font/local'
 import './globals.css'
+import { ReactQueryProvider } from '../shared/lib/tanstack-query'
 
 const pretendard = localFont({
   src: [
@@ -27,7 +28,9 @@ export default function RootLayout({
 }>): ReactElement {
   return (
     <html lang="ko">
-      <body className={`${pretendard.variable} antialiased`}>{children}</body>
+      <body className={`${pretendard.variable} antialiased`}>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
+      </body>
     </html>
   )
 }
