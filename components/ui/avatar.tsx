@@ -15,7 +15,7 @@ const AvatarBase = React.forwardRef<React.ElementRef<typeof AvatarPrimitive.Root
     <AvatarPrimitive.Root
       ref={ref}
       data-slot="avatar"
-      className={cn('flex overflow-hidden relative rounded-xl size-8 shrink-0', className)}
+      className={cn('flex overflow-hidden relative rounded-xl size-fit shrink-0', className)}
       {...props}
     />
   )
