@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from './dialog'
-import { cn } from '@/lib/utils'
+import { cn } from '@/shared/lib/utils'
 
 interface PortalProps
   extends Pick<React.ComponentProps<typeof Dialog>, 'open' | 'defaultOpen' | 'onOpenChange' | 'modal'> {
