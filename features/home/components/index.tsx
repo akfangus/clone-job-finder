@@ -1,0 +1,6 @@
+export { MainIntro } from './main-intro'
+export { Investor } from './investor'
+export { BannerIntro } from './banner-intro'
+export { ProjectPlan } from './project-plan'
+export { JoinStartup } from './join-startup'
+export { BottomFloatButton } from './bottom-float-button'
