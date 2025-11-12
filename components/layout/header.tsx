@@ -9,6 +9,8 @@ export interface HeaderProps extends PropsWithChildren {
 
 export function Header({ children, className }: HeaderProps) {
   return (
-    <header className={cn('flex sticky top-0 justify-between items-center px-2 z-5', className)}>{children}</header>
+    <header className={cn('flex sticky top-0 z-50 justify-between items-center px-2 bg-white', className)}>
+      {children}
+    </header>
   )
 }
