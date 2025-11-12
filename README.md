@@ -15,8 +15,20 @@
 
 ---
 
-## 최근 작업 요약 (2025-11-11)
+## 최근 작업 요약
 
+### 2025-11-12
+- 그룹바이 홈페이지 메인 UI 구현: 메인 페이지의 6개 섹션 컴포넌트를 구현했습니다.
+  - `MainIntro`: 히어로 섹션 (그라데이션 배경, 페이드인 애니메이션, CTA 버튼)
+  - `Investor`: 투자자 로고 무한 스크롤 애니메이션 (CSS keyframes 기반)
+  - `BannerIntro`: 3초마다 자동 전환되는 배너 (useEffect + setInterval)
+  - `ProjectPlan`: 4가지 서비스 플랜 카드 스와이프 (클릭/터치 인터랙션, 인디케이터)
+  - `JoinStartup`: 스타트업 로고 그리드 레이아웃 (반응형, 호버 효과)
+  - `BottomFloatButton`: 스크롤 감지 플로팅 버튼 (화면 높이 기준, throttle 최적화)
+- Next.js 이미지 설정: `next.config.ts`에 `via.placeholder.com` 호스트를 추가하여 외부 이미지 로딩을 지원합니다.
+- 성능 최적화: React.memo, throttle, CSS transform을 활용하여 렌더링 성능을 최적화했습니다.
+
+### 2025-11-11
 - 반응형 내비게이션 시스템 구축: `components/navigation` 전반을 정리해 데스크톱/모바일 헤더를 분리하고, `SubMenuBar`와 `useNavInteraction` 훅을 통해 호버/클릭 기반 상호작용을 지원합니다.
 - 사용성 개선 훅 정리: `useNavInteraction`과 `useResponsiveBreakpoint` 훅에서 명시적 상태 분리와 메모이제이션으로 재랜더를 최소화했습니다.
 - 레이아웃 안정화: `ResponsiveContainer` 컴포넌트로 가시성 제어(requestAnimationFrame 기반)와 뷰포트 폭 제한을 통합해 초기 레이아웃 시프트를 줄였습니다.
@@ -63,6 +75,15 @@ components/ui/      # shadcn 스타일 가이드에 맞춘 UI 컴포넌트
  └─ tooltip.tsx
 components/ui/*.stories.tsx
                     # Storybook 문서 (Badge, Button, Tag, Portal, Tooltip 등)
+features/home/      # 홈 페이지 기능 모듈
+ ├─ main.tsx        # 홈 메인 컴포넌트
+ └─ components/     # 홈 페이지 섹션 컴포넌트
+    ├─ main-intro.tsx
+    ├─ investor.tsx
+    ├─ banner-intro.tsx
+    ├─ project-plan.tsx
+    ├─ join-startup.tsx
+    └─ bottom-float-button.tsx
 lib/utils.ts        # Tailwind 클래스 병합 유틸리티 등
 theme/              # 텍스트 스타일 등 토큰 정의
 ```
