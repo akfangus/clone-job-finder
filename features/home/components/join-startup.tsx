@@ -2,6 +2,7 @@
 
 import { memo } from 'react'
 import Image from 'next/image'
+import { Button } from '@/components/ui/button'
 
 interface StartupLogo {
   id: string
@@ -110,12 +111,9 @@ export const JoinStartup = memo(function JoinStartup() {
           <p className="font-regular-18 md:font-regular-20 text-gray-700 text-center">
             희망 구직 조건을 등록하고, 딱 맞는 제안만 받아보세요!
           </p>
-          <button
-            type="button"
-            className="px-6 py-3 font-regular-16 font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg"
-          >
+          <Button size="lg" className="h-14 bg-emerald-400 hover:bg-emerald-300 font-bold-20 text-white">
             👉🏻 3초만에 가입하고 스카우트 제안받기
-          </button>
+          </Button>
         </div>
       </div>
     </section>

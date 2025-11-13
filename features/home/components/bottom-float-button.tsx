@@ -1,11 +1,28 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { FloatingBG } from '@/components/ui/floating-bg'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { useScrollVisibility } from '@/modules/hooks/use-scroll-visibility'
+import { cn } from '@/shared/lib/utils'
 
 export function BottomFloatButton() {
+  const { isVisible } = useScrollVisibility({
+    topThreshold: 500,
+    bottomThreshold: 500,
+  })
+
   return (
-    <FloatingBG className="fixed right-0 bottom-8 left-0 max-w-180 justify-self-center">
-      <Tooltip open>
+    <FloatingBG
+      className={cn(
+        'fixed right-0 bottom-8 left-0 max-w-180 justify-self-center transition-opacity duration-300 ease-out',
+        !isVisible && 'pointer-events-none'
+      )}
+      style={{
+        opacity: isVisible ? 1 : 0,
+      }}
+    >
+      <Tooltip open={isVisible}>
         <TooltipTrigger asChild>
           <Button size="lg" className="h-14 bg-emerald-400 hover:bg-emerald-300 font-bold-20 text-white">
             👉🏻 3초만에 가입하고 스카우트 제안받기
