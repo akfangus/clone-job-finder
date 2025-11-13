@@ -82,17 +82,10 @@ export const GroupStack: Story = {
     <div className="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:size-10 *:data-[slot=avatar]:ring-2">
       {map(GROUP_MEMBERS, (member) => (
         <Avatar key={member.id} {...args}>
-          <AvatarImage
-            src={member.src}
-            alt={member.alt}
-            width={128}
-            height={128}
-            loading="lazy"
-          />
+          <AvatarImage src={member.src} alt={member.alt} width={128} height={128} loading="lazy" />
           <AvatarFallback>{member.initials}</AvatarFallback>
         </Avatar>
       ))}
     </div>
   ),
 }
-

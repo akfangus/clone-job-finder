@@ -112,4 +112,3 @@ export const AsLink: Story = {
     </Tag>
   ),
 }
-

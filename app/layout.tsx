@@ -6,6 +6,7 @@ import { ReactQueryProvider } from '../shared/lib/tanstack-query'
 import { ResponsiveContainer } from '@/components/layout'
 import { Header } from '@/components/layout/header'
 import { Navigation } from '@/components/navigation'
+import { AuthSessionRestorer } from '@/modules/components'
 
 const pretendard = localFont({
   src: [
@@ -33,6 +34,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className={`${pretendard.variable} antialiased`}>
         <ReactQueryProvider>
+          <AuthSessionRestorer />
           <ResponsiveContainer>
             <Header>
               <Navigation />
