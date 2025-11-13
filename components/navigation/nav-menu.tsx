@@ -9,15 +9,15 @@ import { useNavInteraction } from './hooks/use-nav-menu'
 interface NavMenuProps {
   items: NavItem[]
   onSelectItem?: (item: NavItem) => void
-  onNavigate?: (payload: { item: NavLinkItem | NavSubItem; parentId?: string }) => void
+  onClick?: (item: NavLinkItem | NavSubItem, parentId?: string) => boolean | void
   interactionMode?: 'hover' | 'click'
 }
 
-export function NavMenu({ items, onSelectItem, onNavigate, interactionMode = 'hover' }: NavMenuProps) {
+export function NavMenu({ items, onSelectItem, onClick, interactionMode = 'hover' }: NavMenuProps) {
   const { activeItemId, hoveredMenu, handleItemHover, handleItemClick, handleSubItemClick, resetHover } =
     useNavInteraction({
       items,
-      onNavigate,
+      onClick,
       interactionMode,
     })
 
