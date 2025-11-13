@@ -5,7 +5,7 @@ import type { NavItem, NavLinkItem, NavMenuItem, NavSubItem } from '../type'
 
 interface UseNavInteractionParams {
   items: NavItem[]
-  onNavigate?: (payload: { item: NavLinkItem | NavSubItem; parentId?: string }) => void
+  onClick?: (item: NavLinkItem | NavSubItem, parentId?: string) => boolean | void
   interactionMode?: 'hover' | 'click'
 }
 
@@ -32,7 +32,7 @@ function getHoveredMenu(item: NavItem | null): NavMenuItem | null {
 
 export function useNavInteraction({
   items,
-  onNavigate,
+  onClick,
   interactionMode = 'hover',
 }: UseNavInteractionParams): UseNavInteractionResult {
   const router = useRouter()
@@ -52,21 +52,11 @@ export function useNavInteraction({
     const matchedMenu = find(
       items,
       (item) =>
-        item.type === 'menu' &&
-        Boolean(find(item.items, (subItem) => normalizePath(subItem.url) === currentSegment))
+        item.type === 'menu' && Boolean(find(item.items, (subItem) => normalizePath(subItem.url) === currentSegment))
     ) as NavMenuItem | undefined
 
     return matchedMenu ? matchedMenu.id : null
   }, [items, pathname])
-
-  const handleNavigate = useCallback(
-    (target: NavLinkItem | NavSubItem, parentId?: string) => {
-      const targetUrl = target.url.startsWith('/') ? target.url : `/${target.url}`
-      router.push(targetUrl)
-      onNavigate?.({ item: target, parentId })
-    },
-    [onNavigate, router]
-  )
 
   const handleItemHover = useCallback(
     (item: NavItem | null) => {
@@ -79,7 +69,17 @@ export function useNavInteraction({
   const handleItemClick = useCallback(
     (item: NavItem) => {
       if (item.type === 'link') {
-        handleNavigate(item)
+        // onClick이 있으면 먼저 호출
+        const shouldNavigate = onClick?.(item)
+
+        // onClick이 false를 반환하면 라우팅 방지
+        if (shouldNavigate === false) {
+          return
+        }
+
+        // onClick이 없거나 true/undefined를 반환하면 기본 라우팅 수행
+        const targetUrl = item.url.startsWith('/') ? item.url : `/${item.url}`
+        router.push(targetUrl)
         return
       }
 
@@ -90,15 +90,26 @@ export function useNavInteraction({
 
       setHoveredMenu(item)
     },
-    [handleNavigate, interactionMode]
+    [onClick, router, interactionMode]
   )
 
   const handleSubItemClick = useCallback(
     (parentId: string, subItem: NavSubItem) => {
-      handleNavigate(subItem, parentId)
+      // onClick이 있으면 먼저 호출
+      const shouldNavigate = onClick?.(subItem, parentId)
+
+      // onClick이 false를 반환하면 라우팅 방지
+      if (shouldNavigate === false) {
+        setHoveredMenu(null)
+        return
+      }
+
+      // onClick이 없거나 true/undefined를 반환하면 기본 라우팅 수행
+      const targetUrl = subItem.url.startsWith('/') ? subItem.url : `/${subItem.url}`
+      router.push(targetUrl)
       setHoveredMenu(null)
     },
-    [handleNavigate]
+    [onClick, router]
   )
 
   const resetHover = useCallback(() => {
@@ -115,4 +126,3 @@ export function useNavInteraction({
     resetHover,
   }
 }
-

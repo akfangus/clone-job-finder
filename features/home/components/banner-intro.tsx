@@ -34,7 +34,7 @@ export const BannerIntro = memo(function BannerIntro() {
     <section className="relative w-full py-8 bg-gradient-to-r from-blue-600 to-purple-600">
       <div className="flex items-center justify-center px-4">
         <div
-          className={`text-regular-16 md:text-regular-18 lg:text-regular-20 text-white text-center transition-opacity duration-300 ${
+          className={`font-regular-16 md:font-regular-18 lg:font-regular-20 text-white text-center transition-opacity duration-300 ${
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >

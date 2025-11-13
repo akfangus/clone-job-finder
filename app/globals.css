@@ -127,3 +127,19 @@
     @apply font-normal leading-[1.5] text-[32px];
   }
 }
+
+@layer utilities {
+  @keyframes gentle-bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .animate-gentle-bounce {
+    animation: gentle-bounce 2s ease-in-out infinite;
+  }
+}

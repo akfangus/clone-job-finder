@@ -14,7 +14,7 @@ export const MainIntro = memo(function MainIntro() {
 
       <div className="relative z-10 flex flex-col items-center gap-6 max-w-4xl text-center">
         {/* 메인 타이틀 */}
-        <h1 className="text-heading-32 md:text-heading-48 lg:text-heading-56 text-gray-900 animate-in fade-in-0 duration-700">
+        <h1 className="font-heading-32 md:font-heading-48 lg:font-heading-56 text-gray-900 animate-in fade-in-0 duration-700">
           검증된 스타트업에게
           <br />
           <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -24,7 +24,7 @@ export const MainIntro = memo(function MainIntro() {
         </h1>
 
         {/* 부제목 */}
-        <p className="text-regular-18 md:text-regular-20 lg:text-regular-22 text-gray-600 max-w-2xl animate-in fade-in-0 duration-700 delay-150">
+        <p className="font-regular-18 md:font-regular-20 lg:font-regular-22 text-gray-600 max-w-2xl animate-in fade-in-0 duration-700 delay-150">
           VC가 투자한 성공 보장 스타트업에 합류해보세요.
           <br />
           매달 300명이 넘는 인재가 스카우트 제안을 받고 있어요.
@@ -32,21 +32,16 @@ export const MainIntro = memo(function MainIntro() {
 
         {/* CTA 버튼 */}
         <div className="mt-4 animate-in fade-in-0 duration-700 delay-300">
-          <Button
-            size="lg"
-            className="h-14 px-8 text-regular-18 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            <span className="mr-2">👉🏻</span>
-            3초만에 가입하고 스카우트 제안받기
+          <Button size="lg" className="h-14 bg-emerald-400 hover:bg-emerald-300 font-bold-20">
+            👉🏻 3초만에 가입하고 스카우트 제안받기
           </Button>
         </div>
 
         {/* 추가 정보 */}
-        <p className="mt-8 text-regular-14 text-gray-500 animate-in fade-in duration-700 delay-500">
+        <p className="mt-8 font-regular-14 text-gray-500 animate-in fade-in duration-700 delay-500">
           아래 투자사에서 투자받은 스타트업에 지금 합류해보세요!
         </p>
       </div>
     </section>
   )
 })
-

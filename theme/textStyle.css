@@ -1,65 +1,73 @@
 @layer base {
-  :is(.text-regular, [class^="text-regular-"], [class*=" text-regular-"]) {
+  :is(.font-regular, [class^='font-regular-'], [class*=' font-regular-']) {
     @apply font-normal leading-[1.5];
   }
 
-  :is(.text-bold, [class^="text-bold-"], [class*=" text-bold-"]) {
+  :is(.font-bold, [class^='font-bold-'], [class*=' font-bold-']) {
     @apply font-bold leading-[1.5];
   }
 
-  :is(.text-heading, [class^="text-heading-"], [class*=" text-heading-"]) {
+  :is(.font-heading, [class^='font-heading-'], [class*=' font-heading-']) {
     @apply font-semibold leading-[1.4] tracking-[-0.01em];
   }
 
-  :is(.text-regular-8, .text-bold-8, .text-heading-8) {
+  :is(.font-regular-8, .font-bold-8, .font-heading-8) {
     @apply text-[8px];
   }
 
-  :is(.text-regular-10, .text-bold-10, .text-heading-10) {
+  :is(.font-regular-10, .font-bold-10, .font-heading-10) {
     @apply text-[10px];
   }
 
-  :is(.text-regular-12, .text-bold-12, .text-heading-12) {
+  :is(.font-regular-12, .font-bold-12, .font-heading-12) {
     @apply text-[12px];
   }
 
-  :is(.text-regular-14, .text-bold-14, .text-heading-14) {
+  :is(.font-regular-14, .font-bold-14, .font-heading-14) {
     @apply text-[14px];
   }
 
-  :is(.text-regular-16, .text-bold-16, .text-heading-16) {
+  :is(.font-regular-16, .font-bold-16, .font-heading-16) {
     @apply text-[16px];
   }
 
-  :is(.text-regular-18, .text-bold-18, .text-heading-18) {
+  :is(.font-regular-18, .font-bold-18, .font-heading-18) {
     @apply text-[18px];
   }
 
-  :is(.text-regular-20, .text-bold-20, .text-heading-20) {
+  :is(.font-regular-20, .font-bold-20, .font-heading-20) {
     @apply text-[20px];
   }
 
-  :is(.text-regular-22, .text-bold-22, .text-heading-22) {
+  :is(.font-regular-22, .font-bold-22, .font-heading-22) {
     @apply text-[22px];
   }
 
-  :is(.text-regular-24, .text-bold-24, .text-heading-24) {
+  :is(.font-regular-24, .font-bold-24, .font-heading-24) {
     @apply text-[24px];
   }
 
-  :is(.text-regular-26, .text-bold-26, .text-heading-26) {
+  :is(.font-regular-26, .font-bold-26, .font-heading-26) {
     @apply text-[26px];
   }
 
-  :is(.text-regular-28, .text-bold-28, .text-heading-28) {
+  :is(.font-regular-28, .font-bold-28, .font-heading-28) {
     @apply text-[28px];
   }
 
-  :is(.text-regular-30, .text-bold-30, .text-heading-30) {
+  :is(.font-regular-30, .font-bold-30, .font-heading-30) {
     @apply text-[30px];
   }
 
-  :is(.text-regular-32, .text-bold-32, .text-heading-32) {
+  :is(.font-regular-32, .font-bold-32, .font-heading-32) {
     @apply text-[32px];
+  }
+
+  :is(.font-regular-48, .font-bold-48, .font-heading-48) {
+    @apply text-[48px];
+  }
+
+  :is(.font-regular-56, .font-bold-56, .font-heading-56) {
+    @apply text-[56px];
   }
 }

@@ -17,7 +17,7 @@ export function SubMenuBar({ menu, onItemClick }: SubMenuBarProps) {
           <li key={subItem.id}>
             <button
               type="button"
-              className="w-full transition-colors duration-150 cursor-pointer text-regular-14 text-slate-700 hover:text-primary focus-visible:outline-none"
+              className="w-full transition-colors duration-150 cursor-pointer font-regular-14 text-slate-700 hover:text-primary focus-visible:outline-none"
               onClick={() => onItemClick(subItem)}
             >
               {subItem.label}
