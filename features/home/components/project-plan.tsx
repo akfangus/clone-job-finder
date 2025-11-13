@@ -104,7 +104,7 @@ export const ProjectPlan = memo(function ProjectPlan() {
   return (
     <section className="relative w-full py-16 px-4 bg-gray-50">
       <div className="flex flex-col items-center gap-8 max-w-6xl mx-auto">
-        <h2 className="text-heading-24 md:text-heading-30 lg:text-heading-32 text-gray-900 text-center">
+        <h2 className="font-heading-24 md:font-heading-30 lg:font-heading-32 text-gray-900 text-center">
           좋은 인재들과 팀 문화를 만들며 협업하고 싶다면
         </h2>
 
@@ -126,15 +126,15 @@ export const ProjectPlan = memo(function ProjectPlan() {
                   <div className="text-6xl">{plan.icon}</div>
 
                   {/* 제목 */}
-                  <h3 className="text-heading-24 md:text-heading-28 text-white">{plan.title}</h3>
+                  <h3 className="font-heading-24 md:font-heading-28 text-white">{plan.title}</h3>
 
                   {/* 설명 */}
-                  <p className="text-regular-16 md:text-regular-18 text-white/90">{plan.description}</p>
+                  <p className="font-regular-16 md:font-regular-18 text-white/90">{plan.description}</p>
 
                   {/* 기능 리스트 */}
                   <ul className="flex flex-col gap-3 mt-auto">
                     {plan.features.map((feature, index) => (
-                      <li key={index} className="flex items-start gap-2 text-regular-14 md:text-regular-16">
+                      <li key={index} className="flex items-start gap-2 font-regular-14 md:font-regular-16">
                         <span className="mt-1 text-xl">•</span>
                         <span>{feature}</span>
                       </li>
