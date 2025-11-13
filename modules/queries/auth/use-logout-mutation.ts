@@ -1,13 +1,17 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { AuthService } from '@/shared/api'
+import { signOut } from '@/app/actions/auth-actions'
 import { useAuthStore } from '@/modules/stores'
+import { unwrapActionResult } from '@/shared/lib/types/action-result'
 
 export function useLogoutMutation() {
   const queryClient = useQueryClient()
   const { logout } = useAuthStore()
 
   return useMutation({
-    mutationFn: () => AuthService.signOut(),
+    mutationFn: async () => {
+      const result = await signOut()
+      return unwrapActionResult(result)
+    },
     onSuccess: () => {
       // Zustand 스토어 초기화
       logout()

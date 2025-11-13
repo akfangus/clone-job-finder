@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { AuthService } from '@/shared/api'
+import { signUp } from '@/app/actions/auth-actions'
 import { useAuthStore } from '@/modules/stores'
+import { unwrapActionResult } from '@/shared/lib/types/action-result'
 
 interface SignUpRequest {
   email: string
@@ -12,7 +13,10 @@ export function useSignupMutation() {
   const { login } = useAuthStore()
 
   return useMutation({
-    mutationFn: ({ email, password }: SignUpRequest) => AuthService.signUp(email, password),
+    mutationFn: async ({ email, password }: SignUpRequest) => {
+      const result = await signUp(email, password)
+      return unwrapActionResult(result)
+    },
     onSuccess: (data) => {
       // 회원가입 후 자동 로그인
       login(data.user)
@@ -21,7 +25,7 @@ export function useSignupMutation() {
     },
     onError: (error: Error) => {
       console.error('Signup error:', error)
+      // 에러는 unwrapActionResult에서 throw되므로 여기서 처리
     },
   })
 }
-

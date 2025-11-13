@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { AuthService } from '@/shared/api'
+import { getCurrentUser } from '@/app/actions/auth-actions'
 import { useAuthStore } from '@/modules/stores'
+import { unwrapActionResult } from '@/shared/lib/types/action-result'
 import { useEffect } from 'react'
 
 export function useUserQuery() {
@@ -8,7 +9,10 @@ export function useUserQuery() {
 
   const query = useQuery({
     queryKey: ['auth', 'user'],
-    queryFn: () => AuthService.getCurrentUser(),
+    queryFn: async () => {
+      const result = await getCurrentUser()
+      return unwrapActionResult(result)
+    },
     staleTime: 1000 * 60 * 5, // 5분
     retry: false,
     refetchOnWindowFocus: false,

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { AuthService } from '@/shared/api'
+import { signIn } from '@/app/actions/auth-actions'
 import { useAuthStore } from '@/modules/stores'
+import { unwrapActionResult } from '@/shared/lib/types/action-result'
 
 interface SignInRequest {
   email: string
@@ -12,7 +13,10 @@ export function useLoginMutation() {
   const { login } = useAuthStore()
 
   return useMutation({
-    mutationFn: ({ email, password }: SignInRequest) => AuthService.signIn(email, password),
+    mutationFn: async ({ email, password }: SignInRequest) => {
+      const result = await signIn(email, password)
+      return unwrapActionResult(result)
+    },
     onSuccess: (data) => {
       // Zustand 스토어에 사용자 정보 저장
       login(data.user)
@@ -21,6 +25,7 @@ export function useLoginMutation() {
     },
     onError: (error: Error) => {
       console.error('Login error:', error)
+      // 에러는 unwrapActionResult에서 throw되므로 여기서 처리
     },
   })
 }

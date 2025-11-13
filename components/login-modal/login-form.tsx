@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useLoginMutation } from '@/modules/queries/auth'
+import { validateAndNormalizeEmail } from '@/shared/lib/utils/email-validation'
 
 interface LoginFormProps {
   onSuccess?: () => void
@@ -26,8 +27,16 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         return
       }
 
+      // 이메일 검증
+      const emailValidation = validateAndNormalizeEmail(email)
+      if (!emailValidation.isValid) {
+        setError(emailValidation.error || '올바른 이메일을 입력해주세요.')
+        return
+      }
+
       try {
-        await loginMutation.mutateAsync({ email, password })
+        // 정규화된 이메일로 로그인 시도
+        await loginMutation.mutateAsync({ email: emailValidation.normalizedEmail, password })
         onSuccess?.()
       } catch (err) {
         setError(err instanceof Error ? err.message : '로그인에 실패했습니다.')

@@ -1,4 +1,4 @@
-import type { AxiosError, InternalAxiosRequestConfig } from 'axios'
+import type { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { supabase } from '../supabase'
 import type { ApiError } from './types'
 
@@ -27,11 +27,11 @@ export function setupRequestInterceptor() {
 }
 
 export function setupResponseInterceptor(onUnauthorized?: () => void): {
-  onFulfilled: (response: unknown) => unknown
+  onFulfilled: (response: AxiosResponse) => AxiosResponse
   onRejected: (error: AxiosError<ApiError>) => Promise<never>
 } {
   return {
-    onFulfilled: (response: unknown) => {
+    onFulfilled: (response: AxiosResponse) => {
       // 개발 환경에서 응답 로깅
       if (process.env.NODE_ENV === 'development') {
         console.log('[HTTP Response]', response)
