@@ -1,6 +1,80 @@
 # 작업 로그
 
-ㄹ## 2025-11-12
+## 2025-01-17
+
+### Server Actions 기반 인증 시스템 마이그레이션
+
+#### 구현 내용
+1. **Server Actions 생성** (`app/actions/auth-actions.ts`)
+   - `signUp`: 회원가입 Server Action
+   - `signIn`: 로그인 Server Action
+   - `signOut`: 로그아웃 Server Action
+   - `getCurrentUser`: 현재 사용자 정보 가져오기 Server Action
+   - 서버 사이드 검증 및 에러 처리 구현
+   - Supabase 에러 코드를 사용자 친화적인 메시지로 변환
+
+2. **ActionResult 타입 시스템** (`shared/lib/types/action-result.ts`)
+   - `ActionResult<T>`: 성공 결과 타입
+   - `ActionError`: 실패 결과 타입
+   - `ActionResultUnion<T>`: 성공/실패 유니온 타입
+   - `unwrapActionResult`: 결과를 확인하고 데이터를 반환하는 헬퍼 함수
+
+3. **React Query Mutations 업데이트**
+   - `useLoginMutation`: Server Action `signIn` 호출
+   - `useSignupMutation`: Server Action `signUp` 호출
+   - `useLogoutMutation`: Server Action `signOut` 호출
+   - `useUserQuery`: Server Action `getCurrentUser` 호출
+   - 모든 mutations에서 `unwrapActionResult`를 사용하여 에러 처리
+
+4. **기존 코드 정리**
+   - API Routes 제거: `app/api/auth/signup/route.ts`, `app/api/auth/signin/route.ts`
+   - API Routes 디렉토리 제거: `app/api/auth/`
+   - `AuthService` deprecated 처리: 하위 호환을 위해 유지하되 사용 중단 안내 추가
+
+5. **문서 업데이트**
+   - `docs/nextjs-architecture.md`: Server Actions 기반 아키텍처로 완전히 재작성
+   - `docs/api-architecture-example.md`: Server Actions 구현 예제로 재작성
+   - 이전 버전의 API Routes 관련 내용 제거
+
+#### 주요 개선사항
+- **타입 안정성**: TypeScript로 전체 플로우 타입 체크
+- **에러 처리 일관성**: 통일된 ActionResult 패턴으로 에러 처리
+- **서버 사이드 검증**: 모든 검증 로직을 서버에서 처리
+- **코드 간소화**: fetch 없이 직접 함수 호출로 간단해짐
+- **자동 직렬화**: Next.js가 데이터 자동 변환
+
+#### 기술적 특징
+- Server Actions의 `'use server'` 디렉티브 사용
+- 서버 사이드 Supabase 클라이언트 사용 (`shared/lib/supabase/server.ts`)
+- React Query와 Server Actions 통합
+- Zustand를 통한 전역 상태 관리
+- 타입 안전한 에러 처리 패턴
+
+#### 파일 구조 변경
+```
+app/
+  actions/
+    auth-actions.ts          # Server Actions 정의 (신규)
+
+modules/
+  queries/
+    auth/
+      use-login-mutation.ts  # Server Action 호출로 업데이트
+      use-signup-mutation.ts # Server Action 호출로 업데이트
+      use-logout-mutation.ts # Server Action 호출로 업데이트
+      use-user-query.ts      # Server Action 호출로 업데이트
+
+shared/
+  lib/
+    types/
+      action-result.ts       # ActionResult 타입 정의 (신규)
+    supabase/
+      server.ts              # 서버 사이드 Supabase 클라이언트
+
+app/api/auth/                # 제거됨
+```
+
+## 2025-11-12
 
 ### 그룹바이 홈페이지 메인 UI 구현
 
@@ -68,7 +142,7 @@
 - 프로젝트 텍스트 스타일 시스템 활용 (`font-regular-*`, `font-heading-*`)
 
 ## 2025-11-11
+
 - 내비게이션 메뉴: `useNavInteraction` 훅으로 호버/클릭 모드를 구분하고 SubMenuBar 렌더를 지연해 불필요한 페인트를 줄였습니다.
 - 레이아웃 기반 다듬기: `ResponsiveContainer`에서 requestAnimationFrame 기반 가시성 제어와 Tailwind 레이아웃 토큰을 통합했습니다.
 - 문서 정비: `README.md`에 최신 작업 요약을 추가해 온보딩 가이드를 갱신했습니다.
-

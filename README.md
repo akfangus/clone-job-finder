@@ -6,7 +6,9 @@
 
 ## 기술 스택 개요
 
-- **Framework**: Next.js 15 (Page Router) + React 19
+- **Framework**: Next.js 15 (App Router) + React 19
+- **인증**: Supabase + Server Actions
+- **상태 관리**: Zustand, React Query
 - **스타일링**: Tailwind CSS, shadcn/ui 기반 유틸리티, Radix UI
 - **아이콘 & 유틸리티**: lucide-react, class-variance-authority, lodash (단일 함수 import 전략)
 - **이미지 & 폰트**: WebP 우선 전략, Pretendard Variable
@@ -16,6 +18,24 @@
 ---
 
 ## 최근 작업 요약
+
+### 2025-01-17
+- **Server Actions 기반 인증 시스템 마이그레이션**
+  - Server Actions 생성: `app/actions/auth-actions.ts` (signUp, signIn, signOut, getCurrentUser)
+  - ActionResult 타입 시스템: `shared/lib/types/action-result.ts` (타입 안전한 에러 처리)
+  - React Query Mutations 업데이트: 모든 인증 관련 mutations을 Server Actions로 전환
+  - API Routes 제거: `app/api/auth/` 디렉토리 제거 (Server Actions로 대체)
+  - AuthService deprecated 처리: 하위 호환을 위해 유지하되 사용 중단 안내 추가
+- **문서 업데이트**
+  - `docs/nextjs-architecture.md`: Server Actions 기반 아키텍처로 완전히 재작성
+  - `docs/api-architecture-example.md`: Server Actions 구현 예제로 재작성
+  - 이전 버전의 API Routes 관련 내용 제거
+- **주요 개선사항**
+  - 타입 안정성 강화: TypeScript로 전체 플로우 타입 체크
+  - 에러 처리 일관성: 통일된 ActionResult 패턴으로 에러 처리
+  - 서버 사이드 검증: 모든 검증 로직을 서버에서 처리
+  - 코드 간소화: fetch 없이 직접 함수 호출로 간단해짐
+  - 자동 직렬화: Next.js가 데이터 자동 변환
 
 ### 2025-11-12
 - 그룹바이 홈페이지 메인 UI 구현: 메인 페이지의 6개 섹션 컴포넌트를 구현했습니다.
@@ -66,26 +86,65 @@ npm run build-storybook
 
 ```
 app/                # Next.js 페이지, 전역 레이아웃 및 스타일
-components/ui/      # shadcn 스타일 가이드에 맞춘 UI 컴포넌트
- ├─ badge.tsx
- ├─ button.tsx
- ├─ dialog.tsx
- ├─ portal.tsx
- ├─ tag.tsx
- └─ tooltip.tsx
-components/ui/*.stories.tsx
-                    # Storybook 문서 (Badge, Button, Tag, Portal, Tooltip 등)
-features/home/      # 홈 페이지 기능 모듈
- ├─ main.tsx        # 홈 메인 컴포넌트
- └─ components/     # 홈 페이지 섹션 컴포넌트
+ ├─ actions/        # Server Actions
+ │  └─ auth-actions.ts  # 인증 관련 Server Actions
+ ├─ layout.tsx      # 루트 레이아웃
+ └─ page.tsx        # 홈 페이지
+
+components/         # UI 컴포넌트
+ ├─ ui/            # shadcn 스타일 가이드에 맞춘 UI 컴포넌트
+ │  ├─ badge.tsx
+ │  ├─ button.tsx
+ │  ├─ dialog.tsx
+ │  ├─ input.tsx
+ │  ├─ portal.tsx
+ │  ├─ tag.tsx
+ │  └─ tooltip.tsx
+ ├─ login-modal/   # 로그인/회원가입 모달
+ │  ├─ login-form.tsx
+ │  ├─ signup-form.tsx
+ │  └─ login-modal.tsx
+ └─ navigation/    # 내비게이션 컴포넌트
+
+modules/           # 비즈니스 로직 모듈
+ ├─ queries/       # React Query hooks
+ │  └─ auth/       # 인증 관련 queries/mutations
+ │     ├─ use-login-mutation.ts
+ │     ├─ use-signup-mutation.ts
+ │     ├─ use-logout-mutation.ts
+ │     └─ use-user-query.ts
+ ├─ stores/        # Zustand stores
+ │  └─ auth-store.ts
+ └─ components/    # 공통 컴포넌트
+    └─ auth-session-restorer.tsx
+
+shared/            # 공유 유틸리티 및 서비스
+ ├─ api/           # API 서비스 (deprecated - Server Actions 사용 권장)
+ ├─ lib/           # 라이브러리 유틸리티
+ │  ├─ supabase/   # Supabase 클라이언트
+ │  │  ├─ client.ts    # 클라이언트 사이드
+ │  │  └─ server.ts    # 서버 사이드
+ │  ├─ types/      # 타입 정의
+ │  │  └─ action-result.ts  # Server Actions 결과 타입
+ │  └─ utils/      # 유틸리티 함수
+ │     └─ email-validation.ts
+ └─ lib/http-client/  # HTTP 클라이언트 (Axios 기반)
+
+features/home/     # 홈 페이지 기능 모듈
+ ├─ main.tsx       # 홈 메인 컴포넌트
+ └─ components/    # 홈 페이지 섹션 컴포넌트
     ├─ main-intro.tsx
     ├─ investor.tsx
     ├─ banner-intro.tsx
     ├─ project-plan.tsx
     ├─ join-startup.tsx
     └─ bottom-float-button.tsx
-lib/utils.ts        # Tailwind 클래스 병합 유틸리티 등
-theme/              # 텍스트 스타일 등 토큰 정의
+
+theme/             # 텍스트 스타일 등 토큰 정의
+docs/              # 문서
+ ├─ nextjs-architecture.md      # Next.js 아키텍처 가이드
+ ├─ api-architecture-example.md # Server Actions 예제
+ └─ supabase-email-setup.md     # Supabase 이메일 설정 가이드
 ```
 
 ---
@@ -120,9 +179,43 @@ theme/              # 텍스트 스타일 등 토큰 정의
 
 ---
 
+## 인증 시스템
+
+### Server Actions 기반 인증
+
+프로젝트는 Next.js Server Actions를 사용하여 인증 시스템을 구현했습니다.
+
+- **Server Actions**: `app/actions/auth-actions.ts`
+  - `signUp(email, password)`: 회원가입
+  - `signIn(email, password)`: 로그인
+  - `signOut()`: 로그아웃
+  - `getCurrentUser()`: 현재 사용자 정보 가져오기
+
+- **React Query 통합**: `modules/queries/auth/`
+  - `useLoginMutation`: 로그인 mutation
+  - `useSignupMutation`: 회원가입 mutation
+  - `useLogoutMutation`: 로그아웃 mutation
+  - `useUserQuery`: 사용자 정보 query
+
+- **상태 관리**: Zustand (`modules/stores/auth-store.ts`)
+  - 사용자 정보 전역 상태 관리
+  - 인증 상태 관리
+
+### 환경 변수 설정
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key  # 선택사항
+```
+
+자세한 내용은 `docs/nextjs-architecture.md`와 `docs/api-architecture-example.md`를 참고하세요.
+
+---
+
 ## 향후 로드맵 아이디어
 
-- 구직자/고객 매칭을 위한 도메인 모델 정의 및 React Query 기반 API 연동
+- 구직자/고객 매칭을 위한 도메인 모델 정의 및 Server Actions 기반 API 연동
 - 검색·필터 UI, 즐겨찾기 등 주요 인터랙션 컴포넌트 확장
 - Storybook 기반 비주얼 회귀, Vitest + Playwright를 이용한 E2E 테스트 도입
 - 접근성(A11y) 점검 및 다크모드/국제화(i18n) 지원
