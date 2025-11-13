@@ -34,4 +34,3 @@ export const NavMenuItemComp = memo<NavMenuItemCompProps>(({ item, isActive, isO
 })
 
 NavMenuItemComp.displayName = 'NavMenuItemComp'
-

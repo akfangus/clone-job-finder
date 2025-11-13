@@ -26,4 +26,3 @@ export function getResponsiveMode(width: number): ResponsiveMode {
   const isDesktop = width >= RESPONSIVE_BOUNDARY
   return isDesktop ? 'desktop' : 'mobile'
 }
-

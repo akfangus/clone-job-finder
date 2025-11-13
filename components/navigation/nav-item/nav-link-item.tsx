@@ -32,4 +32,3 @@ export const NavLinkItemComp = memo<NavLinkItemCompProps>(({ item, isActive, onH
 })
 
 NavLinkItemComp.displayName = 'NavLinkItemComp'
-
