@@ -26,7 +26,7 @@ export const Investor = memo(function Investor() {
   return (
     <section className="overflow-hidden relative py-12 w-full bg-white">
       <div className="flex flex-col gap-4 items-center px-4">
-        <h2 className="text-center text-gray-900 text-heading-20 md:text-heading-24">
+        <h2 className="text-center text-gray-900 font-heading-20 md:font-heading-24">
           아래 투자사에서 투자받은 스타트업에 지금 합류해보세요!
         </h2>
 

@@ -2,6 +2,7 @@
 
 import { memo } from 'react'
 import Image from 'next/image'
+import { Button } from '@/components/ui/button'
 
 interface StartupLogo {
   id: string
@@ -63,7 +64,7 @@ export const JoinStartup = memo(function JoinStartup() {
       <div className="flex flex-col items-center gap-8 max-w-6xl mx-auto">
         {/* 섹션 헤더 */}
         <div className="flex flex-col items-center gap-4 text-center">
-          <h2 className="text-heading-24 md:text-heading-30 lg:text-heading-32 text-gray-900">
+          <h2 className="font-heading-24 md:font-heading-30 lg:font-heading-32 text-gray-900">
             그룹바이를 통해서 합류한
             <br />
             검증된 스타트업은 이렇다고 해요
@@ -90,13 +91,13 @@ export const JoinStartup = memo(function JoinStartup() {
               </div>
 
               {/* 스타트업 이름 */}
-              <h3 className="text-regular-14 md:text-regular-16 text-gray-700 text-center font-medium">
+              <h3 className="font-regular-14 md:font-regular-16 text-gray-700 text-center font-medium">
                 {startup.name}
               </h3>
 
               {/* 설명 (있는 경우) */}
               {startup.description && (
-                <p className="text-regular-12 text-gray-500 text-center">{startup.description}</p>
+                <p className="font-regular-12 text-gray-500 text-center">{startup.description}</p>
               )}
 
               {/* 호버 시 오버레이 효과 */}
@@ -107,15 +108,12 @@ export const JoinStartup = memo(function JoinStartup() {
 
         {/* CTA 섹션 */}
         <div className="flex flex-col items-center gap-4 mt-8 p-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl border border-blue-100">
-          <p className="text-regular-18 md:text-regular-20 text-gray-700 text-center">
+          <p className="font-regular-18 md:font-regular-20 text-gray-700 text-center">
             희망 구직 조건을 등록하고, 딱 맞는 제안만 받아보세요!
           </p>
-          <button
-            type="button"
-            className="px-6 py-3 text-regular-16 font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg"
-          >
+          <Button size="lg" className="h-14 bg-emerald-400 hover:bg-emerald-300 font-bold-20 text-white">
             👉🏻 3초만에 가입하고 스카우트 제안받기
-          </button>
+          </Button>
         </div>
       </div>
     </section>

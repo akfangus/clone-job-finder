@@ -13,7 +13,7 @@ interface NavMenuItemCompProps {
 }
 
 export const NavMenuItemComp = memo<NavMenuItemCompProps>(({ item, isActive, isOpen, onHover, onClick }) => {
-  const labelClassName = item.icon ? 'text-regular-12' : 'text-regular-16'
+  const labelClassName = item.icon ? 'font-regular-12' : 'font-regular-16'
   const isHighlighted = isActive || isOpen
 
   return (

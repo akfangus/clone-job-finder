@@ -12,7 +12,7 @@ interface NavLinkItemCompProps {
 }
 
 export const NavLinkItemComp = memo<NavLinkItemCompProps>(({ item, isActive, onHover, onClick }) => {
-  const labelClassName = item.icon ? 'text-regular-12' : 'text-regular-16'
+  const labelClassName = item.icon ? 'font-regular-12' : 'font-regular-16'
 
   return (
     <li>
