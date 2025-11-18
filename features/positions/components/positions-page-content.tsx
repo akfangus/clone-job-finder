@@ -1,51 +1,82 @@
 'use client'
 /* eslint-disable react/jsx-no-useless-fragment */
 import type { JSX } from 'react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { usePositionsQuery, useGroupedPositionsByCategory } from '@/modules/queries/positions'
-import { JobCategoryFilter } from '../consts'
+import { DEFAULT_JOB_CATEGORY_ID, getJobCategoryIdFromQueryParam, JobCategoryFilter } from '../consts'
 import { CategoryTabs } from './category-tabs'
 import { CategorySection } from './category-section'
 
-function mapCategoryFilterToParam(category: JobCategoryFilter): string | undefined {
-  if (category === '전체') return undefined
-  return category
-}
-
 export function PositionsPageContent(): JSX.Element {
-  const [selectedCategory, setSelectedCategory] = useState<JobCategoryFilter>('전체')
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
 
-  const categoryParam = mapCategoryFilterToParam(selectedCategory)
+  const initialCategory = useMemo<JobCategoryFilter>(() => {
+    const categoryParam = searchParams.get('category')
+    return getJobCategoryIdFromQueryParam(categoryParam)
+  }, [searchParams])
+
+  const [selectedCategory, setSelectedCategory] = useState<JobCategoryFilter>(initialCategory)
 
   const {
     data: jobs,
     isLoading,
     isError,
   } = usePositionsQuery({
-    category: categoryParam,
+    category: selectedCategory === DEFAULT_JOB_CATEGORY_ID ? undefined : selectedCategory,
   })
 
   const grouped = useGroupedPositionsByCategory(jobs)
 
-  if (isLoading) {
-    return <div className="text-sm text-gray-500">채용 정보를 불러오는 중입니다...</div>
-  }
+  const handleSelectCategory = (categoryId: JobCategoryFilter): void => {
+    setSelectedCategory(categoryId)
 
-  if (isError) {
-    return <div className="text-sm text-red-500">채용 정보를 불러오는 중 오류가 발생했습니다.</div>
-  }
+    const nextSearchParams = new URLSearchParams(searchParams.toString())
 
-  if (!jobs || jobs.length === 0) {
-    return <div className="text-sm text-gray-500">현재 등록된 채용 공고가 없습니다.</div>
+    if (categoryId === DEFAULT_JOB_CATEGORY_ID) {
+      nextSearchParams.delete('category')
+    } else {
+      nextSearchParams.set('category', categoryId)
+    }
+
+    const queryString = nextSearchParams.toString()
+    const href = queryString ? `${pathname}?${queryString}` : pathname
+
+    router.replace(href, { scroll: false })
   }
 
   return (
     <>
-      <CategoryTabs selected={selectedCategory} onSelect={setSelectedCategory} />
-      <div className="mt-8 flex flex-col gap-10">
-        {grouped.map((group) => (
-          <CategorySection key={group.category} category={group.category} jobs={group.jobs} />
-        ))}
+      <CategoryTabs selected={selectedCategory} onSelect={handleSelectCategory} />
+      <div className="mt-8 min-h-[160px]">
+        {isLoading && (
+          <div className="flex items-center justify-center py-10 text-sm text-gray-500">
+            <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-gray-700" />
+            채용 정보를 불러오는 중입니다...
+          </div>
+        )}
+
+        {isError && !isLoading && (
+          <div className="flex items-center justify-center py-10 text-sm text-red-500">
+            채용 정보를 불러오는 중 오류가 발생했습니다.
+          </div>
+        )}
+
+        {!isLoading && !isError && (!jobs || jobs.length === 0) && (
+          <div className="flex items-center justify-center py-10 text-sm text-gray-500">
+            현재 등록된 채용 공고가 없습니다.
+          </div>
+        )}
+
+        {!isLoading && !isError && jobs && jobs.length > 0 && (
+          <div className="flex flex-col gap-10">
+            {grouped.map((group) => (
+              <CategorySection key={group.category} category={group.category} jobs={group.jobs} />
+            ))}
+          </div>
+        )}
       </div>
     </>
   )

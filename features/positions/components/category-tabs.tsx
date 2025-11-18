@@ -1,4 +1,4 @@
-import { JOB_CATEGORIES, JobCategoryFilter } from '../consts'
+import { JOB_CATEGORY_CONFIG, JobCategoryFilter } from '../consts'
 
 interface CategoryTabsProps {
   selected: JobCategoryFilter
@@ -10,20 +10,20 @@ export function CategoryTabs(props: CategoryTabsProps) {
 
   return (
     <div className="inline-flex rounded-full bg-gray-100 p-1 text-xs">
-      {JOB_CATEGORIES.map((category) => {
-        const isActive = selected === category
+      {JOB_CATEGORY_CONFIG.map((category) => {
+        const isActive = selected === category.id
 
         return (
           <button
-            key={category}
+            key={category.id}
             type="button"
-            onClick={() => onSelect(category)}
+            onClick={() => onSelect(category.id)}
             className={[
               'rounded-full px-4 py-2 transition-colors',
               isActive ? 'bg-gray-900 text-white' : 'text-gray-700 hover:bg-gray-200',
             ].join(' ')}
           >
-            {category}
+            {category.label}
           </button>
         )
       })}
