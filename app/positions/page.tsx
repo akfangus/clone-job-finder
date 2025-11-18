@@ -1,3 +1,5 @@
+import { PositionsMain } from '@/features/positions'
+
 export default function PositionsPage() {
-  return <div>PositionsPage</div>
+  return <PositionsMain />
 }

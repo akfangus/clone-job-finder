@@ -1,0 +1,1 @@
+export { PositionsMain } from './main'
