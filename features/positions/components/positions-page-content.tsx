@@ -4,6 +4,7 @@ import type { JSX } from 'react'
 import { useMemo, useState } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { usePositionsQuery, useGroupedPositionsByCategory } from '@/modules/queries/positions'
+import { DataEmpty, DataError, DataLoading } from '@/components/data-fetching'
 import { DEFAULT_JOB_CATEGORY_ID, getJobCategoryIdFromQueryParam, JobCategoryFilter } from '../consts'
 import { CategoryTabs } from './category-tabs'
 import { CategorySection } from './category-section'
@@ -51,23 +52,12 @@ export function PositionsPageContent(): JSX.Element {
     <>
       <CategoryTabs selected={selectedCategory} onSelect={handleSelectCategory} />
       <div className="mt-8 min-h-[160px]">
-        {isLoading && (
-          <div className="flex items-center justify-center py-10 text-sm text-gray-500">
-            <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-gray-700" />
-            채용 정보를 불러오는 중입니다...
-          </div>
-        )}
+        {isLoading && <DataLoading text="채용 정보를 불러오는 중입니다..." />}
 
-        {isError && !isLoading && (
-          <div className="flex items-center justify-center py-10 text-sm text-red-500">
-            채용 정보를 불러오는 중 오류가 발생했습니다.
-          </div>
-        )}
+        {isError && !isLoading && <DataError message="채용 정보를 불러오는 중 오류가 발생했습니다." />}
 
         {!isLoading && !isError && (!jobs || jobs.length === 0) && (
-          <div className="flex items-center justify-center py-10 text-sm text-gray-500">
-            현재 등록된 채용 공고가 없습니다.
-          </div>
+          <DataEmpty message="현재 등록된 채용 공고가 없습니다." />
         )}
 
         {!isLoading && !isError && jobs && jobs.length > 0 && (
