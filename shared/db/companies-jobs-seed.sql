@@ -1,0 +1,166 @@
+-- Companies seed -----------------------------------------------------------
+insert into public.companies (name, logo_url, homepage_url)
+values
+  ('혜움', null, 'https://www.example-hyeum.com'),
+  ('토스', null, 'https://toss.im'),
+  ('당근마켓', null, 'https://www.daangn.com'),
+  ('네이버', null, 'https://www.navercorp.com'),
+  ('쿠팡', null, 'https://www.coupang.com')
+on conflict (name) do update
+set
+  logo_url = excluded.logo_url,
+  homepage_url = excluded.homepage_url;
+
+-- Jobs seed ----------------------------------------------------------------
+insert into public.jobs (
+  company_id,
+  title,
+  category,
+  employment_type,
+  location,
+  description,
+  salary_range,
+  tags,
+  is_active,
+  summary,
+  experience_level,
+  work_type,
+  min_years_experience,
+  max_years_experience,
+  apply_url,
+  deadline,
+  responsibilities,
+  requirements,
+  benefits
+)
+select
+  c.id as company_id,
+  j.title,
+  j.category,
+  j.employment_type,
+  j.location,
+  j.description,
+  j.salary_range,
+  j.tags,
+  j.is_active,
+  j.summary,
+  j.experience_level,
+  j.work_type,
+  j.min_years_experience,
+  j.max_years_experience,
+  j.apply_url,
+  j.deadline,
+  j.responsibilities,
+  j.requirements,
+  j.benefits
+from (
+  values
+    -- 혜움
+    ('혜움', '프론트엔드 개발자', '개발', '정규직', '서울', 'Next.js와 TypeScript 기반 웹 서비스 개발', '5,000만원~7,000만원', array['React', 'TypeScript', 'Next.js'], true,
+      'B2B/B2C 웹 서비스 프론트엔드 전반을 담당합니다.', '미들', '하이브리드', 3, 7, 'https://www.example-hyeum.com/jobs/frontend',
+      '2025-03-31', array['기능 설계 및 컴포넌트 구현', '디자이너/백엔드와의 협업', '성능 최적화 및 접근성 개선'], array['3년 이상 프론트엔드 경험', 'React/Next.js 실무 경험', 'TypeScript 활용 경험'], array['탄력 근무제', '재택 근무 선택', '교육비 지원']),
+    ('혜움', '백엔드 개발자', '개발', '정규직', '서울', 'Node.js 기반 API 및 인프라 개발', '5,000만원~8,000만원', array['Node.js', 'PostgreSQL', 'Supabase'], true,
+      'Node.js와 Supabase를 활용한 API 서버 개발을 담당합니다.', '미들', '하이브리드', 3, 8, 'https://www.example-hyeum.com/jobs/backend',
+      '2025-04-15', array['REST/GraphQL API 설계 및 구현', 'DB 스키마 설계 및 튜닝', '인프라 모니터링 및 장애 대응'], array['3년 이상 백엔드 경험', 'Node.js 및 RDBMS 경험', '클라우드 환경 운영 경험'], array['스톡옵션', '개발 장비 지원', '컨퍼런스 참가기회']),
+    ('혜움', '주니어 프론트엔드 개발자', '개발', '정규직', '서울', '신규 기능 개발과 유지보수를 함께 수행합니다.', '3,500만원~5,000만원', array['React', 'TypeScript'], true,
+      '시니어 개발자와 함께 성장할 수 있는 주니어 포지션입니다.', '주니어', '하이브리드', 1, 3, 'https://www.example-hyeum.com/jobs/junior-frontend',
+      '2025-05-01', array['컴포넌트 단위 개발', '버그 수정 및 QA 대응', '코드 리뷰 참여'], array['1년 이상 프론트엔드 경험 또는 동등 역량', 'JavaScript/TypeScript 기본기'], array['멘토링 프로그램', '사내 스터디 지원']),
+    -- 토스
+    ('토스', '브랜드 디자이너', '디자인', '정규직', '서울', '브랜드 아이덴티티 및 캠페인 디자인', null, array['Branding', 'Figma'], true,
+      '토스 브랜드의 톤앤매너를 함께 만들어갈 디자이너를 찾습니다.', '미들', '오피스', 3, 7, 'https://toss.im/careers/brand-designer',
+      '2025-03-10', array['브랜드 캠페인 디자인', '온라인/오프라인 크리에이티브 제작'], array['3년 이상 브랜드 디자인 경험', 'Figma 사용 능숙'], array['조식/중식 제공', '사내 피트니스']),
+    ('토스', '프로덕트 디자이너', '디자인', '정규직', '서울', '모바일/웹 프로덕트 UX/UI 디자인', null, array['UX', 'UI', 'Figma'], true,
+      '금융 서비스의 UX를 설계하고 UI를 구현합니다.', '시니어', '하이브리드', 5, 10, 'https://toss.im/careers/product-designer',
+      '2025-04-05', array['사용자 리서치 및 페인포인트 분석', '와이어프레임/프로토타입 제작', '개발자와 협업하여 릴리즈 관리'], array['5년 이상 프로덕트 디자인 경험', '모바일 앱 UX 설계 경험'], array['업계 최고 수준 연봉', '자율 출퇴근']),
+    ('토스', 'UX Writer', '마케팅', '정규직', '서울', '서비스 내 UX 카피라이팅', null, array['UX Writing', 'Copy'], true,
+      '금융 경험을 쉽고 친근하게 풀어낼 수 있는 UX 라이터를 찾습니다.', '미들', '하이브리드', 3, 7, 'https://toss.im/careers/ux-writer',
+      '2025-06-01', array['프로덕트 텍스트 가이드라인 수립', '각 플로우별 UX 카피 작성'], array['3년 이상 카피라이팅 경험', '디지털 서비스 경험 우대'], array['원격 근무 옵션', '자기계발비 지원']),
+    -- 당근마켓
+    ('당근마켓', '마케팅 매니저', '마케팅', '정규직', '서울', '서비스 성장 전략 수립 및 실행', null, array['Growth', 'Performance Marketing'], true,
+      '지역 기반 서비스의 성장 전략을 설계하고 실행합니다.', '미들', '하이브리드', 4, 8, 'https://team.daangn.com/jobs/marketing-manager',
+      '2025-03-20', array['캠페인 기획 및 운영', '퍼포먼스 채널 운영', '데이터 기반 인사이트 도출'], array['4년 이상 마케팅 경험', '퍼포먼스 마케팅 운영 경험'], array['간식/커피 무제한', '워크샵 지원']),
+    ('당근마켓', '콘텐츠 마케터', '마케팅', '정규직', '서울', '콘텐츠 기획 및 제작', null, array['Content', 'SNS'], true,
+      '다양한 채널을 통해 당근마켓 스토리를 전달합니다.', '주니어', '하이브리드', 1, 4, 'https://team.daangn.com/jobs/content-marketer',
+      '2025-04-30', array['콘텐츠 아이디어 기획', 'SNS/블로그 운영'], array['1년 이상 콘텐츠 제작 경험', '글쓰기 능력'], array['재택 근무 가능', '자율 복장']),
+    ('당근마켓', 'CRM 마케터', '마케팅', '정규직', '서울', '유저 리텐션을 위한 CRM 캠페인 운영', null, array['CRM', 'Retention'], true,
+      '유저 데이터를 기반으로 개인화된 캠페인을 설계합니다.', '미들', '하이브리드', 3, 7, 'https://team.daangn.com/jobs/crm-marketer',
+      '2025-05-10', array['CRM 시나리오 설계', '메시지 발송 및 성과 분석'], array['CRM 툴 사용 경험', 'SQL 활용 가능자 우대'], array['교육 지원비', '인센티브 제도']),
+    -- 네이버
+    ('네이버', '프론트엔드 개발자', '개발', '정규직', '판교', 'React 기반 신규 서비스 프런트 개발', '6,000만원~9,000만원', array['React', 'Recoil', 'TypeScript'], true,
+      '대규모 트래픽을 처리하는 프론트엔드 서비스를 개발합니다.', '시니어', '오피스', 5, 10, 'https://recruit.navercorp.com/frontend',
+      '2025-03-25', array['SPA 설계 및 구현', '성능 최적화 및 모니터링'], array['5년 이상 프론트엔드 경험', 'React 생태계에 대한 깊은 이해'], array['사내 카페', '사내 어린이집']),
+    ('네이버', '백엔드 개발자', '개발', '정규직', '판교', '대규모 트래픽 처리 백엔드 시스템 개발', '7,000만원~1억', array['Java', 'Spring', 'MySQL'], true,
+      '검색/콘텐츠 서비스 백엔드 시스템을 설계하고 운영합니다.', '시니어', '오피스', 5, 12, 'https://recruit.navercorp.com/backend',
+      '2025-04-20', array['마이크로서비스 설계', '대용량 데이터 처리'], array['Java/Spring 경험', '대규모 시스템 운영 경험'], array['업계 최고 수준 복지', '장기근속 포상']),
+    ('네이버', '데이터 엔지니어', '개발', '정규직', '판교', '데이터 파이프라인 및 분석 인프라 구축', null, array['Data Pipeline', 'Hadoop', 'Kafka'], true,
+      '데이터 기반 서비스 의사결정을 지원하는 인프라를 만듭니다.', '미들', '하이브리드', 3, 8, 'https://recruit.navercorp.com/data-engineer',
+      '2025-05-15', array['데이터 파이프라인 구축', 'ETL 작업 자동화'], array['분산 시스템 이해', '데이터 엔지니어링 경험'], array['도서 지원', '사내 기술 세미나']),
+    -- 쿠팡
+    ('쿠팡', '데이터 분석가', '마케팅', '정규직', '송파', '커머스 데이터 분석 및 인사이트 도출', null, array['SQL', 'Python', 'Analytics'], true,
+      '커머스 서비스 전반의 핵심 지표를 분석합니다.', '미들', '오피스', 3, 7, 'https://rocketyourcareer.coupang.com/analytics',
+      '2025-03-18', array['A/B 테스트 설계 및 분석', '마케팅 퍼널 분석'], array['SQL 능숙', 'Python/R 분석 경험'], array['자녀 학자금 지원', '연 2회 인센티브']),
+    ('쿠팡', '물류 시스템 개발자', '개발', '정규직', '송파', '로켓배송 물류 시스템 개발', null, array['Java', 'Spring', 'Logistics'], true,
+      '물류센터/배송 시스템을 위한 백엔드 서비스를 개발합니다.', '미들', '오피스', 4, 9, 'https://rocketyourcareer.coupang.com/logistics-dev',
+      '2025-04-25', array['물류 관련 도메인 설계', '실시간 모니터링 시스템 개발'], array['Java/Spring 경험', '물류 도메인 관심'], array['야식 지원', '교통비 지원']),
+    ('쿠팡', 'SRE 엔지니어', '개발', '정규직', '송파', '서비스 안정성과 가용성 확보를 위한 SRE 역할', null, array['SRE', 'DevOps', 'Kubernetes'], true,
+      '서비스 신뢰성을 위한 인프라와 프로세스를 구축합니다.', '시니어', '하이브리드', 5, 12, 'https://rocketyourcareer.coupang.com/sre',
+      '2025-06-10', array['모니터링/알림 시스템 구축', '장애 대응 프로세스 개선'], array['Kubernetes/Cloud 경험', '온콜 문화 경험'], array['유연 근무제', '원격 근무 옵션']),
+    -- 추가 샘플 (20개 이상 확보용)
+    ('혜움', '풀스택 개발자', '개발', '정규직', '서울', '프론트엔드와 백엔드를 모두 다루는 풀스택 포지션', '5,500만원~8,500만원', array['React', 'Node.js', 'PostgreSQL'], true,
+      '서비스 전반의 기능 개발과 운영을 책임지는 풀스택 포지션입니다.', '미들', '하이브리드', 4, 8, 'https://www.example-hyeum.com/jobs/fullstack',
+      '2025-05-20', array['엔드투엔드 기능 개발', 'CI/CD 파이프라인 개선'], array['풀스택 개발 경험', '클라우드 인프라 경험'], array['리모트 워크 일부 허용', '교육 컨퍼런스 지원']),
+    ('토스', '프론트엔드 엔지니어', '개발', '정규직', '서울', '토스 앱/웹 프론트엔드 개발', null, array['React Native', 'React', 'TypeScript'], true,
+      '토스의 다양한 금융 서비스를 프론트엔드에서 구현합니다.', '미들', '하이브리드', 3, 7, 'https://toss.im/careers/frontend-engineer',
+      '2025-04-10', array['모바일/웹 UI 구현', '실험/실측 기반 최적화'], array['모바일 프론트엔드 경험', 'React 또는 React Native 경험'], array['스톡옵션', '리프레시 휴가']),
+    ('당근마켓', '서비스 기획자', '마케팅', '정규직', '서울', '신규/기존 서비스 기획 및 운영', null, array['Service Planning', 'UX'], true,
+      '동네 생활을 더 편리하게 만드는 서비스 기획을 담당합니다.', '미들', '하이브리드', 3, 7, 'https://team.daangn.com/jobs/service-planner',
+      '2025-05-05', array['신규 기능 기획', '지표 모니터링 및 개선'], array['서비스 기획 경험', '데이터 기반 의사결정 능력'], array['자율 근무제', '도서비 지원']),
+    ('네이버', 'ML 엔지니어', '개발', '정규직', '판교', '머신러닝 모델 개발 및 서빙', null, array['Machine Learning', 'Python', 'TensorFlow'], true,
+      '검색/추천 서비스를 위한 모델 개발을 수행합니다.', '시니어', '하이브리드', 4, 10, 'https://recruit.navercorp.com/ml-engineer',
+      '2025-06-30', array['머신러닝 모델링', '온라인 서빙 및 A/B 테스트'], array['ML 관련 석사 이상 혹은 동등 경험', '대규모 데이터 처리 경험'], array['연구 지원 프로그램', '학회 참가 지원']),
+    ('쿠팡', '상품 기획 MD', '마케팅', '정규직', '송파', '카테고리 상품 기획 및 운영', null, array['MD', 'E-commerce'], true,
+      '커머스 카테고리의 상품 소싱과 프로모션 기획을 담당합니다.', '미들', '오피스', 3, 7, 'https://rocketyourcareer.coupang.com/md',
+      '2025-05-25', array['상품 소싱 및 계약', '프로모션 기획'], array['이커머스 MD 경험', '벤더 커뮤니케이션 능력'], array['임직원 할인', '복지 포인트'])
+) as j(
+  company_name,
+  title,
+  category,
+  employment_type,
+  location,
+  description,
+  salary_range,
+  tags,
+  is_active,
+  summary,
+  experience_level,
+  work_type,
+  min_years_experience,
+  max_years_experience,
+  apply_url,
+  deadline,
+  responsibilities,
+  requirements,
+  benefits
+)
+join public.companies c on c.name = j.company_name
+on conflict (company_id, title) do update
+set
+  category = excluded.category,
+  employment_type = excluded.employment_type,
+  location = excluded.location,
+  description = excluded.description,
+  salary_range = excluded.salary_range,
+  tags = excluded.tags,
+  is_active = excluded.is_active,
+  summary = excluded.summary,
+  experience_level = excluded.experience_level,
+  work_type = excluded.work_type,
+  min_years_experience = excluded.min_years_experience,
+  max_years_experience = excluded.max_years_experience,
+  apply_url = excluded.apply_url,
+  deadline = excluded.deadline,
+  responsibilities = excluded.responsibilities,
+  requirements = excluded.requirements,
+  benefits = excluded.benefits;
+
+
