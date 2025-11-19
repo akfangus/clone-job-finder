@@ -1,16 +1,17 @@
 import type { JSX } from 'react'
+import Link from 'next/link'
 
 import { Tag } from '@/components/ui/tag'
-import type { useGroupedPositionsByCategory } from '@/modules/queries/positions'
+import type { JobItem } from '@/modules/queries/positions'
 
 interface JobCardProps {
-  job: ReturnType<typeof useGroupedPositionsByCategory>[number]['jobs'][number]
+  job: JobItem
 }
 
-export function JobCard(props: JobCardProps) {
+export function JobCard(props: JobCardProps): JSX.Element {
   const { job } = props
 
-  return (
+  const content = (
     <article className="flex cursor-pointer flex-col rounded-xl border border-gray-100 bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
       <div className="mb-2 text-xs font-medium text-gray-500">{job.companyName}</div>
       <h3 className="mb-2 text-sm font-semibold text-gray-900">{job.title}</h3>
@@ -29,5 +30,15 @@ export function JobCard(props: JobCardProps) {
         </div>
       )}
     </article>
+  )
+
+  if (!job.publicId) {
+    return content
+  }
+
+  return (
+    <Link href={`/positions/${job.publicId}`} className="block">
+      {content}
+    </Link>
   )
 }
