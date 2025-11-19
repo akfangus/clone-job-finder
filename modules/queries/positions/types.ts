@@ -1,6 +1,8 @@
 export interface JobItem {
   id: string
+  publicId: number | null
   companyId: string
+  companyPublicId: number | null
   companyName: string
   companyLogoUrl: string | null
   title: string
