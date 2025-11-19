@@ -1,5 +1,6 @@
 'use server'
 
+import { cookies } from 'next/headers'
 import { createServerClient } from '@/shared/lib/supabase/server'
 import { normalizeEmail } from '@/shared/lib/utils/email-validation'
 import type { User } from '@supabase/supabase-js'
@@ -80,7 +81,7 @@ export async function signUp(email: string, password: string): Promise<ActionRes
     }
 
     // 서버 사이드 Supabase 클라이언트 사용
-    const supabase = createServerClient()
+    const supabase = await createServerClient()
 
     // 회원가입 처리
     const { data, error } = await supabase.auth.signUp({
@@ -116,13 +117,29 @@ export async function signUp(email: string, password: string): Promise<ActionRes
       }
     }
 
+    const cookieStore = await cookies()
+    const accessToken = data.session.access_token
+    const refreshToken = data.session.refresh_token
+
+    const maxAge = 60 * 60 * 24 * 7 // 7일
+    const cookieBaseOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax' as const,
+      path: '/',
+      maxAge,
+    }
+
+    cookieStore.set('access_token', accessToken, cookieBaseOptions)
+    cookieStore.set('refresh_token', refreshToken, cookieBaseOptions)
+
     return {
       success: true,
       data: {
         user: data.user,
         session: {
-          access_token: data.session.access_token,
-          refresh_token: data.session.refresh_token,
+          access_token: accessToken,
+          refresh_token: refreshToken,
         },
       },
     }
@@ -152,7 +169,7 @@ export async function signIn(email: string, password: string): Promise<ActionRes
     const normalizedEmail = normalizeEmail(email)
 
     // 서버 사이드 Supabase 클라이언트 사용
-    const supabase = createServerClient()
+    const supabase = await createServerClient()
 
     // 로그인 처리
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -175,13 +192,29 @@ export async function signIn(email: string, password: string): Promise<ActionRes
       }
     }
 
+    const cookieStore = await cookies()
+    const accessToken = data.session.access_token
+    const refreshToken = data.session.refresh_token
+
+    const maxAge = 60 * 60 * 24 * 7 // 7일
+    const cookieBaseOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax' as const,
+      path: '/',
+      maxAge,
+    }
+
+    cookieStore.set('access_token', accessToken, cookieBaseOptions)
+    cookieStore.set('refresh_token', refreshToken, cookieBaseOptions)
+
     return {
       success: true,
       data: {
         user: data.user,
         session: {
-          access_token: data.session.access_token,
-          refresh_token: data.session.refresh_token,
+          access_token: accessToken,
+          refresh_token: refreshToken,
         },
       },
     }
@@ -200,7 +233,7 @@ export async function signIn(email: string, password: string): Promise<ActionRes
 export async function signOut(): Promise<ActionResultUnion<void>> {
   try {
     // 서버 사이드 Supabase 클라이언트 사용
-    const supabase = createServerClient()
+    const supabase = await createServerClient()
 
     // 로그아웃 처리
     const { error } = await supabase.auth.signOut()
@@ -211,6 +244,10 @@ export async function signOut(): Promise<ActionResultUnion<void>> {
         error: error.message || '로그아웃에 실패했습니다.',
       }
     }
+
+    const cookieStore = await cookies()
+    ;(cookieStore as any).delete?.('access_token')
+    ;(cookieStore as any).delete?.('refresh_token')
 
     return {
       success: true,
@@ -231,7 +268,7 @@ export async function signOut(): Promise<ActionResultUnion<void>> {
 export async function getCurrentUser(): Promise<ActionResultUnion<User | null>> {
   try {
     // 서버 사이드 Supabase 클라이언트 사용
-    const supabase = createServerClient()
+    const supabase = await createServerClient()
 
     // 현재 사용자 정보 가져오기
     const {
