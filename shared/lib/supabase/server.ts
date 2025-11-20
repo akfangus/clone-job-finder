@@ -46,11 +46,39 @@ export function createServerAdminClient() {
 }
 
 /**
- * 서버 사이드 Supabase 클라이언트 생성 (Anon Key 사용)
- * - API Routes, Server Components, Server Actions에서 사용
- * - 쿠키 기반 세션을 사용하여 인증
- *
- * 주의: 이 함수는 서버 사이드에서만 사용해야 합니다.
+ * 서버 컴포넌트 / RSC 전용 Supabase 클라이언트
+ * - 쿠키 읽기만 수행 (set/remove NO-OP)
+ * - Next 규칙상 RSC에서는 쿠키를 수정할 수 없음
+ */
+export function createServerComponentClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Missing Supabase environment variables')
+  }
+
+  const cookieStore = cookies() as any
+
+  return createSupabaseServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      get(name: string): string | undefined {
+        return cookieStore.get(name)?.value
+      },
+      set() {
+        // NO-OP: RSC에서는 쿠키 수정 불가
+      },
+      remove() {
+        // NO-OP: RSC에서는 쿠키 수정 불가
+      },
+    },
+  })
+}
+
+/**
+ * Server Action / Route Handler 전용 Supabase 클라이언트
+ * - 쿠키 읽기/쓰기 모두 허용
+ * - 인증 토큰/세션 쿠키를 이 레이어에서만 수정
  */
 export async function createServerClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -60,20 +88,18 @@ export async function createServerClient() {
     throw new Error('Missing Supabase environment variables')
   }
 
-  const cookieStore = await cookies()
+  const cookieStore = cookies() as any
 
   return createSupabaseServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
       get(name: string): string | undefined {
         return cookieStore.get(name)?.value
       },
-      // set/remove는 Server Actions나 Route Handlers에서만 사용 가능
-      // 타입 차이로 인한 경고를 피하기 위해 any 캐스팅 사용
       set(name: string, value: string, options?: any) {
-        ;(cookieStore as any).set?.(name, value, options)
+        ;(cookieStore as any).set(name, value, options)
       },
       remove(name: string, options?: any) {
-        ;(cookieStore as any).set?.(name, '', {
+        ;(cookieStore as any).set(name, '', {
           ...(options || {}),
           maxAge: 0,
         })
