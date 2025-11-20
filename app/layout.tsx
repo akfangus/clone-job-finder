@@ -32,7 +32,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: ReactNode
 }>): Promise<ReactElement> {
-  const supabase = createServerComponentClient()
+  const supabase = await createServerComponentClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -42,7 +42,7 @@ export default async function RootLayout({
 
   return (
     <html lang="ko">
-      <body className={`${pretendard.variable} antialiased`}>
+      <body className={`${pretendard.variable} antialiased `}>
         <ReactQueryProvider>
           <AuthStoreProvider
             initialUser={initialUser}

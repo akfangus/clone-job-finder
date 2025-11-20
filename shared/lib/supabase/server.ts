@@ -49,8 +49,9 @@ export function createServerAdminClient() {
  * 서버 컴포넌트 / RSC 전용 Supabase 클라이언트
  * - 쿠키 읽기만 수행 (set/remove NO-OP)
  * - Next 규칙상 RSC에서는 쿠키를 수정할 수 없음
+ * - Next 15 이후 cookies()는 async 이므로 반드시 await 해야 함
  */
-export function createServerComponentClient() {
+export async function createServerComponentClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
@@ -58,7 +59,7 @@ export function createServerComponentClient() {
     throw new Error('Missing Supabase environment variables')
   }
 
-  const cookieStore = cookies() as any
+  const cookieStore = await cookies()
 
   return createSupabaseServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
@@ -88,7 +89,7 @@ export async function createServerClient() {
     throw new Error('Missing Supabase environment variables')
   }
 
-  const cookieStore = cookies() as any
+  const cookieStore = await cookies()
 
   return createSupabaseServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
