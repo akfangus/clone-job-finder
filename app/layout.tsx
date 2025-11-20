@@ -8,7 +8,7 @@ import { Header } from '@/components/layout/header'
 import { Navigation } from '@/components/navigation'
 import { AuthSessionRestorer } from '@/modules/components'
 import { AuthStoreProvider } from '@/modules/stores'
-import { createServerClient } from '@/shared/lib/supabase'
+import { createServerComponentClient } from '@/shared/lib/supabase'
 
 const pretendard = localFont({
   src: [
@@ -32,7 +32,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: ReactNode
 }>): Promise<ReactElement> {
-  const supabase = await createServerClient()
+  const supabase = createServerComponentClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
