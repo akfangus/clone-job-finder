@@ -11,7 +11,7 @@ export function Navigation() {
   }
 
   return (
-    <div className="flex justify-between items-center w-full h-[64px] px-2 ">
+    <div className="flex justify-between items-center w-full h-[64px] px-2">
       {mode === 'desktop' && <DesktopHeader />}
       {mode === 'mobile' && <MobileHeader />}
     </div>

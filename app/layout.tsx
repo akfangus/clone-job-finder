@@ -7,6 +7,8 @@ import { ResponsiveContainer } from '@/components/layout'
 import { Header } from '@/components/layout/header'
 import { Navigation } from '@/components/navigation'
 import { AuthSessionRestorer } from '@/modules/components'
+import { AuthStoreProvider } from '@/modules/stores'
+import { createServerClient } from '@/shared/lib/supabase'
 
 const pretendard = localFont({
   src: [
@@ -25,22 +27,36 @@ export const metadata: Metadata = {
   description: 'Clone-Job-Search',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode
-}>): ReactElement {
+}>): Promise<ReactElement> {
+  const supabase = await createServerClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  const initialUser = user ?? null
+  const initialIsAuthenticated = !!initialUser
+
   return (
     <html lang="ko">
       <body className={`${pretendard.variable} antialiased`}>
         <ReactQueryProvider>
-          <AuthSessionRestorer />
-          <ResponsiveContainer>
-            <Header>
-              <Navigation />
-            </Header>
-            {children}
-          </ResponsiveContainer>
+          <AuthStoreProvider
+            initialUser={initialUser}
+            initialIsAuthenticated={initialIsAuthenticated}
+            initialIsLoading={false}
+          >
+            <AuthSessionRestorer />
+            <ResponsiveContainer>
+              <Header>
+                <Navigation />
+              </Header>
+              {children}
+            </ResponsiveContainer>
+          </AuthStoreProvider>
         </ReactQueryProvider>
       </body>
     </html>
