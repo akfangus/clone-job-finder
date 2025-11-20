@@ -10,7 +10,7 @@ export default async function MyPage() {
     error,
   } = await supabase.auth.getUser()
 
-  const resume = !error && user ? await getResumeByUserId(user.id) : null
+  const resume = !error && user ? await getResumeByUserId(user.id, supabase) : null
 
   return <MyPageMain resume={resume} />
 }
