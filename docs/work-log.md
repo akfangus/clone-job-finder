@@ -1,6 +1,108 @@
 # 작업 로그
 
-## 2025-01-17
+## 2025-11-21 (오늘)
+
+### My Page 이력서 기능 구현
+
+#### 구현 내용
+1. **Supabase 데이터베이스 스키마** (`shared/db/resumes.sql`)
+   - `resumes` 테이블 생성: 사용자별 이력서 정보 저장
+   - RLS (Row Level Security) 정책 적용: 본인 데이터만 접근 가능
+   - 필드: `id`, `user_id`, `full_name`, `phone`, `email`, `title`, `summary`, `experiences`, `educations`, `skills`, `links`, `created_at`, `updated_at`
+   - `user_id` 유니크 인덱스로 1인당 1개 이력서 제한
+
+2. **이력서 서비스 레이어** (`shared/api/resume-service.ts`)
+   - `getResumeByUserId`: 사용자 ID로 이력서 조회
+   - `upsertResumeForUser`: 이력서 생성/수정 (upsert)
+   - Supabase 클라이언트를 파라미터로 받아 RLS 정책 준수
+   - DB row → 도메인 모델 매핑 함수 (`mapRowToResume`)
+
+3. **API 라우트** (`app/api/resume/route.ts`)
+   - `GET /api/resume`: 현재 로그인 사용자의 이력서 조회
+   - `PUT /api/resume`: 이력서 생성/수정
+   - 서버 사이드 인증 확인 및 RLS 준수
+   - 브라우저 Network 탭에서 확인 가능한 fetch 요청
+
+4. **My Page UI 구현** (`features/my-page/`)
+   - `MyPageMain`: 메인 컴포넌트 (상태 관리 및 레이아웃)
+   - `MyPageHero`: 페이지 헤더 섹션
+   - `AuthRequiredCard`: 비로그인 사용자 안내 카드
+   - `ResumeDetailCard`: 이력서 상세 정보 표시
+   - `ResumeEmptyCard`: 이력서 없음 상태 UI
+   - `ResumeModal`: 이력서 작성/수정 모달
+
+5. **커스텀 훅** (`features/my-page/hooks/`)
+   - `useResumeState`: 이력서 상태 및 모달 관리 훅
+   - `useResumeForm`: 이력서 폼 상태 및 검증 훅
+
+6. **React Query 통합** (`modules/queries/resume/`)
+   - `useResumeMutation`: 이력서 저장 mutation
+   - API 라우트를 통한 fetch 요청
+
+7. **서버 컴포넌트** (`app/my-page/page.tsx`)
+   - 서버 사이드에서 이력서 데이터 조회
+   - 로그인 사용자 확인 및 이력서 전달
+
+#### 주요 개선사항
+- **RLS 정책 준수**: Supabase 클라이언트를 서비스 함수에 전달하여 RLS 정책 통과
+- **API 라우트 방식**: Server Action 대신 API Route 사용으로 브라우저 Network 탭에서 확인 가능
+- **컴포넌트 분리**: 관심사 분리 원칙에 따라 UI 컴포넌트와 로직 훅 분리
+- **타입 안정성**: TypeScript 인터페이스로 전체 플로우 타입 체크
+- **에러 처리**: 통일된 에러 메시지 및 사용자 친화적 UI
+
+#### 기술적 특징
+- Next.js 15 async `cookies()` API 대응
+- Supabase RLS 정책을 활용한 보안 강화
+- React Query를 통한 클라이언트 상태 관리
+- Zustand를 통한 인증 상태 관리
+- Tailwind CSS 기반 반응형 UI
+
+#### 해결한 이슈
+- **RLS 에러**: 서버 클라이언트를 서비스 함수에 전달하여 해결
+- **Next.js 15 async cookies**: `createServerComponentClient`, `createServerClient`를 async 함수로 변경
+- **Zustand getSnapshot 경고**: selector에서 객체 대신 원시값 반환으로 해결
+- **새로고침 시 데이터 사라짐**: 페이지에서도 RLS 준수 클라이언트 사용
+
+#### 파일 구조 변경
+```
+app/
+  api/
+    resume/
+      route.ts              # 이력서 API 라우트 (신규)
+  my-page/
+    page.tsx                # My Page 서버 컴포넌트 (신규)
+    layout.tsx              # My Page 레이아웃 (신규)
+
+features/
+  my-page/
+    main.tsx                # My Page 메인 컴포넌트 (신규)
+    components/
+      auth-required-card.tsx      # 비로그인 안내 카드 (신규)
+      my-page-hero.tsx            # 페이지 헤더 (신규)
+      resume-detail-card.tsx      # 이력서 상세 카드 (신규)
+      resume-empty-card.tsx       # 빈 상태 카드 (신규)
+      resume-modal.tsx            # 이력서 모달 (신규)
+    hooks/
+      use-resume-form.ts          # 폼 관리 훅 (신규)
+      use-resume-state.ts         # 상태 관리 훅 (신규)
+
+modules/
+  queries/
+    resume/
+      use-resume-mutation.ts      # 이력서 mutation (신규)
+      index.ts                    # export (신규)
+
+shared/
+  api/
+    resume-service.ts             # 이력서 서비스 (신규)
+  db/
+    resumes.sql                   # DB 스키마 (신규)
+  lib/
+    supabase/
+      server.ts                   # async cookies() 대응 업데이트
+```
+
+## 2025-11-17
 
 ### Server Actions 기반 인증 시스템 마이그레이션
 
