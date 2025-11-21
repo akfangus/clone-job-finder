@@ -1,3 +1,4 @@
+import type { SupabaseClient } from '@supabase/supabase-js'
 import { createServerAdminClient } from '../lib/supabase/server'
 
 export interface Resume {
@@ -62,8 +63,10 @@ function mapRowToResume(row: ResumeRow): Resume {
   }
 }
 
-export async function getResumeByUserId(userId: string): Promise<Resume | null> {
-  const supabase = createServerAdminClient()
+type AnySupabaseClient = SupabaseClient<any, 'public', any>
+
+export async function getResumeByUserId(userId: string, client?: AnySupabaseClient): Promise<Resume | null> {
+  const supabase = client ?? createServerAdminClient()
 
   const { data, error } = await supabase
     .from('resumes')
@@ -102,8 +105,12 @@ export async function getResumeByUserId(userId: string): Promise<Resume | null> 
   return mapRowToResume(data as ResumeRow)
 }
 
-export async function upsertResumeForUser(userId: string, payload: ResumeUpsertPayload): Promise<Resume> {
-  const supabase = createServerAdminClient()
+export async function upsertResumeForUser(
+  userId: string,
+  payload: ResumeUpsertPayload,
+  client?: AnySupabaseClient
+): Promise<Resume> {
+  const supabase = client ?? createServerAdminClient()
 
   const { data, error } = await supabase
     .from('resumes')

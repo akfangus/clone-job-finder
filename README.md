@@ -19,7 +19,22 @@
 
 ## 최근 작업 요약
 
-### 2025-01-17
+### 2025-11-21 
+- **My Page 이력서 기능 구현**
+  - Supabase `resumes` 테이블 및 RLS 정책 생성 (MCP를 통한 마이그레이션)
+  - 이력서 서비스 레이어 구현: `shared/api/resume-service.ts`
+  - API 라우트 방식 채택: `app/api/resume/route.ts` (GET/PUT)
+  - My Page UI 구현: 이력서 표시/빈 상태/작성 모달
+  - 컴포넌트 분리: Hero, AuthRequiredCard, ResumeDetailCard, ResumeEmptyCard, ResumeModal
+  - 커스텀 훅: `useResumeState`, `useResumeForm`
+  - React Query 통합: `useResumeMutation`
+- **기술적 개선사항**
+  - Next.js 15 async `cookies()` API 대응
+  - Supabase RLS 정책을 활용한 보안 강화
+  - Zustand getSnapshot 경고 해결 (selector 최적화)
+  - 서버 컴포넌트에서 RLS 준수 클라이언트 사용
+
+### 2025-11-17
 - **Server Actions 기반 인증 시스템 마이그레이션**
   - Server Actions 생성: `app/actions/auth-actions.ts` (signUp, signIn, signOut, getCurrentUser)
   - ActionResult 타입 시스템: `shared/lib/types/action-result.ts` (타입 안전한 에러 처리)
@@ -88,6 +103,12 @@ npm run build-storybook
 app/                # Next.js 페이지, 전역 레이아웃 및 스타일
  ├─ actions/        # Server Actions
  │  └─ auth-actions.ts  # 인증 관련 Server Actions
+ ├─ api/            # API Routes
+ │  └─ resume/      # 이력서 API
+ │     └─ route.ts  # GET/PUT 이력서 조회/저장
+ ├─ my-page/        # 마이페이지
+ │  ├─ page.tsx     # My Page 서버 컴포넌트
+ │  └─ layout.tsx   # My Page 레이아웃
  ├─ layout.tsx      # 루트 레이아웃
  └─ page.tsx        # 홈 페이지
 
@@ -108,37 +129,55 @@ components/         # UI 컴포넌트
 
 modules/           # 비즈니스 로직 모듈
  ├─ queries/       # React Query hooks
- │  └─ auth/       # 인증 관련 queries/mutations
- │     ├─ use-login-mutation.ts
- │     ├─ use-signup-mutation.ts
- │     ├─ use-logout-mutation.ts
- │     └─ use-user-query.ts
+ │  ├─ auth/       # 인증 관련 queries/mutations
+ │  │  ├─ use-login-mutation.ts
+ │  │  ├─ use-signup-mutation.ts
+ │  │  ├─ use-logout-mutation.ts
+ │  │  └─ use-user-query.ts
+ │  └─ resume/     # 이력서 관련 queries/mutations
+ │     └─ use-resume-mutation.ts
  ├─ stores/        # Zustand stores
  │  └─ auth-store.ts
  └─ components/    # 공통 컴포넌트
     └─ auth-session-restorer.tsx
 
 shared/            # 공유 유틸리티 및 서비스
- ├─ api/           # API 서비스 (deprecated - Server Actions 사용 권장)
+ ├─ api/           # API 서비스
+ │  ├─ auth-service.ts  # 인증 서비스 (deprecated)
+ │  └─ resume-service.ts  # 이력서 서비스
+ ├─ db/            # 데이터베이스 스키마
+ │  └─ resumes.sql # 이력서 테이블 및 RLS 정책
  ├─ lib/           # 라이브러리 유틸리티
  │  ├─ supabase/   # Supabase 클라이언트
  │  │  ├─ client.ts    # 클라이언트 사이드
- │  │  └─ server.ts    # 서버 사이드
+ │  │  └─ server.ts    # 서버 사이드 (async cookies 지원)
  │  ├─ types/      # 타입 정의
  │  │  └─ action-result.ts  # Server Actions 결과 타입
  │  └─ utils/      # 유틸리티 함수
  │     └─ email-validation.ts
  └─ lib/http-client/  # HTTP 클라이언트 (Axios 기반)
 
-features/home/     # 홈 페이지 기능 모듈
- ├─ main.tsx       # 홈 메인 컴포넌트
- └─ components/    # 홈 페이지 섹션 컴포넌트
-    ├─ main-intro.tsx
-    ├─ investor.tsx
-    ├─ banner-intro.tsx
-    ├─ project-plan.tsx
-    ├─ join-startup.tsx
-    └─ bottom-float-button.tsx
+features/          # 기능 모듈
+ ├─ home/          # 홈 페이지 기능 모듈
+ │  ├─ main.tsx    # 홈 메인 컴포넌트
+ │  └─ components/ # 홈 페이지 섹션 컴포넌트
+ │     ├─ main-intro.tsx
+ │     ├─ investor.tsx
+ │     ├─ banner-intro.tsx
+ │     ├─ project-plan.tsx
+ │     ├─ join-startup.tsx
+ │     └─ bottom-float-button.tsx
+ └─ my-page/       # 마이페이지 기능 모듈
+    ├─ main.tsx    # My Page 메인 컴포넌트
+    ├─ components/ # My Page 컴포넌트
+    │  ├─ auth-required-card.tsx
+    │  ├─ my-page-hero.tsx
+    │  ├─ resume-detail-card.tsx
+    │  ├─ resume-empty-card.tsx
+    │  └─ resume-modal.tsx
+    └─ hooks/      # My Page 커스텀 훅
+       ├─ use-resume-form.ts
+       └─ use-resume-state.ts
 
 theme/             # 텍스트 스타일 등 토큰 정의
 docs/              # 문서
